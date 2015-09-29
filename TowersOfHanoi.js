@@ -3,27 +3,33 @@
 var prompt = require('prompt');
 prompt.start();
 
-function getPrompt() {
-  prompt.get(['start', 'finish'], function (error, result) {
-  	//if (gameOver()){
-  	//	return false;
-  	//}
-  	if (result['start'] || result['finish'] == 'exit'){
-  		return false;
-  	}
-  	printStacks();
-    getPrompt();
-  });
-}
-
-// var start = result['start'];
-// var finish = result['finish'];
-
 var stacks = {
   a: [4, 3, 2, 1],
   b: [],
   c: []	
 };
+
+printStacks();
+getPrompt();
+
+function getPrompt() {
+  prompt.get(['start', 'finish'], function (error, result) {
+  	if (result['start'] == 'exit' || result['finish'] == 'exit'){
+       return false;
+  	}
+  	if (isLegal(result['start'], result['finish'])){   
+  		moveBlock(result['start'], result['finish']);
+  	}
+    if (!gameOver()){
+       printStacks();	
+       getPrompt();
+}      else {
+	     console.log('You win!')
+	     printStacks();
+}
+  });
+}
+
 
 function printStacks(){
   console.log('a: ' + stacks.a);
@@ -31,31 +37,30 @@ function printStacks(){
   console.log('c: ' + stacks.c);
 };
 
-// function isLegal(start, finish){
-// 	if (start.length > finish.length) {
-// 		return true;
-// 	} else {
-// 		return false;
-// 		console.log ('That is not a legal move');
-// 	}
-// }
+function isLegal(start, finish){
+var lastIndex = stacks[start].length -1;
+var nextNumber = stacks[finish].length -1;
+var startingNumber = stacks[start][lastIndex];
+var endingNumber = stacks[finish][nextNumber];
+
+	  if (startingNumber < endingNumber || !endingNumber ) {
+		return true;
+	} 
+	  else {
+	  	console.log('That move is not allowed, try a different move.')	
+		return false;
+	}
+}
 
 function moveBlock(start, finish){
-	var takeFirst = stacks.start.pop();
-    stacks.finish.push(takeFirst);
+	var takeLast = stacks[start].pop();
+    stacks[finish].push(takeLast);
 };
 
-// function gameOver(){
-// 	if (stacks.a.length == 0 && stacks.b.length == 0 && stacks.c.length == 4){
-// 		console.log('You did it!');
-// 		return true;
-// 	} else {
-// 		return false;
-// 	}
-// }
-
-getPrompt();
-//isLegal();
-moveBlock();
-//gameOver();
-printStacks();
+ function gameOver(){
+if (stacks.b.length === 4 || stacks.c.length === 4){
+ 		return true;
+ 	} else {
+ 		return false;
+ 	}
+ }
