@@ -35,6 +35,7 @@ function getPrompt() {
  		}
  		playerTurn = (playerTurn === 'X') ? '0' : 'X';
         printboard();
+        checkforWin();
         getPrompt();
     });
  }; 
@@ -66,7 +67,7 @@ function diagonal(){
 function checkforWin() {
 	if (horizontal() || vertical() || diagonal()) {
 		console.log('Player ' +  playerTurn + ' Won!');
-		// printboard();
+		printboard();
 		return true;
     }
     return false;
