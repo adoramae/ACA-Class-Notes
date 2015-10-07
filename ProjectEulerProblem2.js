@@ -11,17 +11,19 @@
 
 //loop for fibinachi sequence
 
-var fibArr = [1,2,3];
+var fibArr = [1,2];
 
-for (var i = 1; i < 4000000000; ++i){
+for (var i = 1; i < 4000000; ++i){
+		if (fibArr[fibArr.length-1] + fibArr[fibArr.length-2] < 4000000){
 		fibArr.push( fibArr[fibArr.length-1] + fibArr[fibArr.length-2] );
+		}
 	}
 
-//console.log(fibArr);
+console.log(fibArr);
 
 //add that array together by using an if else statement for numbers that %2 and add together 
 
-var totalOfFibArr = 0
+var totalOfFibArr = 0;
 for (var j = 0; j < fibArr.length; j++){
 	if (fibArr[j] % 2 === 0) {
 		totalOfFibArr = totalOfFibArr + fibArr[j];
