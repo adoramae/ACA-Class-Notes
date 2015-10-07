@@ -1,64 +1,113 @@
 'use strict';
 
-//Build the Board
-var board = [];
-  for (var i=0; i<10; i++){
-     board.push([' ',' ',' ',' ']);//.join(' '));
-  }
-
-function printBoard(){
-	console.log(board);
-};
-
 //Prompt User Input
 var prompt = require('prompt');
 prompt.start();
 
+var colors = require('colors/safe');
+
+//Build the Board
+var board = [];
+for (var i = 0; i < 10; i++){
+    board.push([' ', ' ', ' ', ' ']);//.join(' '));
+}
+
+function printBoard() {
+    console.log(board[0].join(' '));
+    console.log(board[1].join(' '));
+    console.log(board[2].join(' '));
+    console.log(board[3].join(' '));
+    console.log(board[4].join(' '));
+    console.log(board[5].join(' '));
+    console.log(board[6].join(' '));
+    console.log(board[7].join(' '));
+    console.log(board[8].join(' '));
+    console.log(board[9].join(' '));
+};
+
 function getPrompt() {
     prompt.get(['pattern'], function (error, result) {
-        console.log('input recieved: ' + result.pattern);
-       //check pattern 
-    insertCode(result.pattern);
+    	var result = result['pattern'];
+        console.log('input recieved: ' + result);
+        //check pattern 
+    	insertCode(result);
+    	// computeMessage();
 
-    if ( checkSolution(result.pattern) == true ){
-    	return;
-    }
+	    if (checkSolution(result) == true) {
+	    	return false;
+	    }
+	    if (numTry > 9){
+	    	console.log('You ran out of turns! Try again...')
+	    	return false;
+	    }
 
-        getPrompt();
+    	getPrompt();
     });
 }
 
-function insertCode(pattern){
-	var numTry = j;
-    for (var j=0; j<10; j++){
-     return j;
-    }
-var splitPattern = result['pattern'].split(' ');
-board[numTry][0] = splitPattern[0];
-board[numTry][1] = splitPattern[1];
-board[numTry][2] = splitPattern[2];
-board[numTry][3] = splitPattern[3];
-board[numTry][4] = splitPattern[4];
-board[numTry][5] = splitPattern[5];
-board[numTry][6] = splitPattern[6];
-board[numTry][7] = splitPattern[7];
-board[numTry][8] = splitPattern[8];
-board[numTry][9] = splitPattern[9];
+var numTry = 0;
+//var solution = 'abcd'
 
+function insertCode(pattern) {
+
+	var splitPattern = pattern.split('');
+
+	board[numTry][0] = splitPattern[0];
+	board[numTry][1] = splitPattern[1];
+	board[numTry][2] = splitPattern[2];
+	board[numTry][3] = splitPattern[3];
+
+	var message = computeMessage(splitPattern);
+
+	board[numTry].push(message);
+	printBoard();
+
+	numTry++;
 }
 
-var splitSolution = solution.split('');
-var lettersSpacesCorrect = 0;
-var lettersCorrect = 0;
 
-function splitSolution(splitPattern){
+function computeMessage(splitPattern) {
 
+	var splitSolution = solution.split('');
+	var letterSpacesCorrect = 0;
+	var lettersCorrect = 0;
+
+	if (splitPattern[0] === splitSolution[0]) {
+    	letterSpacesCorrect += 1;
+	}
+
+	if (splitPattern[1] === splitSolution[1]) {
+    	letterSpacesCorrect += 1;
+	}
+
+	if (splitPattern[2] === splitSolution[2]) {
+    	letterSpacesCorrect += 1;
+	}
+
+	if (splitPattern[3] === splitSolution[3]) {
+    	letterSpacesCorrect += 1;
+	}
+
+	if (splitSolution.indexOf(splitPattern[0]) > -1) {
+    	lettersCorrect += 1;
+	}
+
+	if (splitSolution.indexOf(splitPattern[1]) > -1) {
+    	lettersCorrect += 1;
+	}
+	if (splitSolution.indexOf(splitPattern[2]) > -1) {
+    	lettersCorrect += 1;
+	}
+
+	if (splitSolution.indexOf(splitPattern[3]) > -1) {
+    	lettersCorrect += 1;
+	}
+
+	return colors.red(letterSpacesCorrect) + ' - ' + lettersCorrect;
 }
-
-var solution = 'abcd'
 
 function checkSolution(pattern){
-	if (pattern = solution){
+	if (pattern === solution){
 		console.log(pattern + ' is the solution!')
 		return true;
 	} else{
@@ -66,10 +115,35 @@ function checkSolution(pattern){
 	}
 
 }
+//How does min and max become indecies? 
+function getRandomInt(min, max) {
+  return Math.random() * (max - min) + min;
+}
 
+var letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+
+var solution ='';
+function generateRandomCode(){
+	for (var i=0; i<4; i++){
+
+	var randomIndex = getRandomInt(0, 7)
+	//getRandomInt(0, letters.length)
+	solution += letters[randomIndex];
+}
+
+}
+
+// solution = [
+//     letters[getRandomInt(0, letters.length)],
+//     letters[getRandomInt(0, letters.length)],
+//     letters[getRandomInt(0, letters.length)],
+//     letters[getRandomInt(0, letters.length)]
+// ].join('');
 
 
 //Call your functions
 
+generateRandomCode();
 printBoard();
 getPrompt();
+
