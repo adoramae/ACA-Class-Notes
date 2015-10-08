@@ -25,28 +25,29 @@ function printBoard() {
     console.log(board[9].join(' '));
 };
 
-function getPrompt() {
-    prompt.get(['pattern'], function (error, result) {
-    	var result = result['pattern'];
-        console.log('input recieved: ' + result);
-        //check pattern 
-    	insertCode(result);
-    	// computeMessage();
-
-	    if (checkSolution(result) == true) {
-	    	return false;
-	    }
-	    if (numTry > 9){
-	    	console.log('You ran out of turns! Try again...')
-	    	return false;
-	    }
-
-    	getPrompt();
-    });
+//var solution = 'abcd'
+//How does min and max become indecies? 
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
 }
 
-var numTry = 0;
-//var solution = 'abcd'
+var letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+var solution = '';
+
+function generateRandomCode(){
+
+	for (var i = 0; i < 4; i++) {
+		var randomIndex = getRandomInt(0, letters.length);
+		solution = solution + letters[randomIndex];
+	}
+}
+
+// var solution = [
+//     letters[getRandomInt(0, letters.length)],
+//     letters[getRandomInt(0, letters.length)],
+//     letters[getRandomInt(0, letters.length)],
+//     letters[getRandomInt(0, letters.length)]
+// ].join('');
 
 function insertCode(pattern) {
 
@@ -115,31 +116,6 @@ function checkSolution(pattern){
 	}
 
 }
-//How does min and max become indecies? 
-function getRandomInt(min, max) {
-  return Math.random() * (max - min) + min;
-}
-
-var letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-
-var solution ='';
-function generateRandomCode(){
-	for (var i=0; i<4; i++){
-
-	var randomIndex = getRandomInt(0, 7)
-	//getRandomInt(0, letters.length)
-	solution += letters[randomIndex];
-}
-
-}
-
-// solution = [
-//     letters[getRandomInt(0, letters.length)],
-//     letters[getRandomInt(0, letters.length)],
-//     letters[getRandomInt(0, letters.length)],
-//     letters[getRandomInt(0, letters.length)]
-// ].join('');
-
 
 //Call your functions
 
@@ -147,3 +123,25 @@ generateRandomCode();
 printBoard();
 getPrompt();
 
+function getPrompt() {
+    prompt.get(['pattern'], function (error, result) {
+    	var result = result['pattern'];
+    	//console.log(generateRandomCode(solution) );
+        //console.log('solution ', solution);
+        console.log('input recieved: ' + result);
+        //check pattern 
+    	insertCode(result);
+
+	    if (checkSolution(result) == true) {
+	    	return false;
+	    }
+	    if (numTry > 9){
+	    	console.log('You ran out of turns! Try again...')
+	    	return false;
+	    }
+
+    	getPrompt();
+    });
+}
+
+var numTry = 0;
